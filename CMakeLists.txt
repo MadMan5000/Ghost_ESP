@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.16.0)
 
 # Set IDF_TARGET from environment variable if defined
 if(DEFINED ENV{IDF_TARGET})
+    # Workaround GCC 14 internal compiler error in esp_lcd RGB sources on Windows
+    # Prevent IRA hoisting that triggers an ICE in xtensa-esp32s3-elf-gcc 14.2
+    add_compile_options(-fno-ira-hoist-pressure)
     set(IDF_TARGET $ENV{IDF_TARGET})
     message(STATUS "Setting IDF_TARGET to ${IDF_TARGET} from environment variable")
 endif()
